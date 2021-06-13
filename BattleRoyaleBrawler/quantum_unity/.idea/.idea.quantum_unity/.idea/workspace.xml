@@ -11,11 +11,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/unity-chan!/Unity-chan! Model/Scripts/CameraFollow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/unity-chan!/Unity-chan! Model/Scripts/LittleGirlController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../quantum_code/quantum.code/Core/CodeGen.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Assets/Photon/QuantumDemo/Game/Scripts/LocalInput.cs" />
+      <option value="$PROJECT_DIR$/Assets/unity-chan!/Unity-chan! Model/Scripts/LittleGirlController.cs" />
+      <option value="$PROJECT_DIR$/Assets/unity-chan!/Unity-chan! Model/Scripts/CameraFollow.cs" />
+      <option value="$PROJECT_DIR$/Assets/Photon/QuantumDemo/Menu/Scripts/CustomCallbacks.cs" />
+      <option value="$PROJECT_DIR$/Assets/Photon/QuantumDemo/Menu/Scripts/WinnersUI.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tsmCvS8XLv6EZNjIDXpCFimxGJ" />
@@ -62,6 +68,7 @@
       <option name="presentableId" value="Default" />
       <updated>1623566047141</updated>
       <workItem from="1623566066337" duration="1649000" />
+      <workItem from="1623569143196" duration="5701000" />
     </task>
     <servers />
   </component>

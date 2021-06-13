@@ -56,8 +56,9 @@
     <Compile Include="Core\CodeGen.cs" />
     <Compile Include="CommandSetup.cs" />
     <Compile Include="Core\Core.cs" />
-    <Compile Include="FallGirls\Input.User.cs" />
-    <Compile Include="FallGirls\MovementSystem.cs" />
+    <Compile Include="FallGirls\Data\Input.User.cs" />
+    <Compile Include="FallGirls\System\MovementSystem.cs" />
+    <Compile Include="FallGirls\System\ObstaclesSystem.cs" />
     <Compile Include="Frame.User.cs" />
     <Compile Include="FrameContext.User.cs" />
     <Compile Include="RuntimeConfig.User.cs" />
@@ -67,7 +68,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FallGirls\Movement.qtn" />
+    <Content Include="FallGirls\Data\DSL\GameOver.qtn" />
+    <Content Include="FallGirls\Data\DSL\Movement.qtn" />
+    <Content Include="FallGirls\Data\DSL\Obstacles.qtn" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

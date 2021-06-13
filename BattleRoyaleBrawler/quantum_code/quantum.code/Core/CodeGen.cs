@@ -377,25 +377,36 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 424;
+    public const Int32 SIZE = 432;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(8)]
-    public FP DeltaTime;
-    [FieldOffset(136)]
-    public FrameMetaData FrameMetaData;
-    [FieldOffset(0)]
-    public AssetRefMap Map;
     [FieldOffset(16)]
-    public NavMeshRegionMask NavMeshRegions;
-    [FieldOffset(192)]
-    public PhysicsSceneSettings PhysicsSettings;
-    [FieldOffset(120)]
-    public RNGSession RngSession;
-    [FieldOffset(160)]
-    public BitSet256 Systems;
+    public FP DeltaTime;
+    [FieldOffset(144)]
+    public FrameMetaData FrameMetaData;
+    [FieldOffset(8)]
+    public AssetRefMap Map;
     [FieldOffset(24)]
+    public NavMeshRegionMask NavMeshRegions;
+    [FieldOffset(200)]
+    public PhysicsSceneSettings PhysicsSettings;
+    [FieldOffset(128)]
+    public RNGSession RngSession;
+    [FieldOffset(168)]
+    public BitSet256 Systems;
+    [FieldOffset(0)]
+    [FramePrinter.PtrQListAttribute(typeof(PlayerRef))]
+    private Ptr WinnersPtr;
+    [FieldOffset(32)]
     [FramePrinter.FixedArrayAttribute(typeof(Input), 6)]
     private fixed Byte _input_[96];
+    public QListPtr<PlayerRef> Winners {
+      get {
+        return new QListPtr<PlayerRef>(WinnersPtr);
+      }
+      set {
+        WinnersPtr = value.Ptr;
+      }
+    }
     public FixedArray<Input> input {
       get {
         fixed (byte* p = _input_) { return new FixedArray<Input>(p, 16, 6); }
@@ -411,12 +422,14 @@ namespace Quantum {
         hash = hash * 31 + PhysicsSettings.GetHashCode();
         hash = hash * 31 + RngSession.GetHashCode();
         hash = hash * 31 + Systems.GetHashCode();
+        hash = hash * 31 + WinnersPtr.GetHashCode();
         hash = hash * 31 + input.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (_globals_*)ptr;
+        QList<PlayerRef>.Serialize(&p->WinnersPtr, serializer, PlayerRef.Serialize);
         AssetRefMap.Serialize(&p->Map, serializer);
         FP.Serialize(&p->DeltaTime, serializer);
         NavMeshRegionMask.Serialize(&p->NavMeshRegions, serializer);
@@ -435,6 +448,8 @@ namespace Quantum {
     public FP Acceleration;
     [FieldOffset(16)]
     public FP Drag;
+    [FieldOffset(4)]
+    public QBoolean Grounded;
     [FieldOffset(24)]
     public FP JumpImpulse;
     [FieldOffset(0)]
@@ -444,6 +459,7 @@ namespace Quantum {
         var hash = 71;
         hash = hash * 31 + Acceleration.GetHashCode();
         hash = hash * 31 + Drag.GetHashCode();
+        hash = hash * 31 + Grounded.GetHashCode();
         hash = hash * 31 + JumpImpulse.GetHashCode();
         hash = hash * 31 + Player.GetHashCode();
         return hash;
@@ -452,9 +468,28 @@ namespace Quantum {
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (FallGirl*)ptr;
         PlayerRef.Serialize(&p->Player, serializer);
+        QBoolean.Serialize(&p->Grounded, serializer);
         FP.Serialize(&p->Acceleration, serializer);
         FP.Serialize(&p->Drag, serializer);
         FP.Serialize(&p->JumpImpulse, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct RotatingObstacle : Quantum.IComponent {
+    public const Int32 SIZE = 24;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(0)]
+    public FPVector3 AxisSpeed;
+    public override Int32 GetHashCode() {
+      unchecked { 
+        var hash = 73;
+        hash = hash * 31 + AxisSpeed.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (RotatingObstacle*)ptr;
+        FPVector3.Serialize(&p->AxisSpeed, serializer);
     }
   }
   public unsafe partial class Frame {
@@ -470,6 +505,7 @@ namespace Quantum {
     partial void InitGen() {
       ComponentTypeId.Setup(() => {
         ComponentTypeId.Add<Quantum.FallGirl>(new ComponentCallbacks(Quantum.FallGirl.Serialize));
+        ComponentTypeId.Add<Quantum.RotatingObstacle>(new ComponentCallbacks(Quantum.RotatingObstacle.Serialize));
       });
       Initialize(this, this.SimulationConfig.Entities);
       _ComponentSignalsOnAdded = new ComponentReactiveCallbackInvoker[ComponentTypeId.Type.Length];
@@ -498,6 +534,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<PhysicsCollider2D>();
       BuildSignalsArrayOnComponentAdded<PhysicsCollider3D>();
       BuildSignalsArrayOnComponentRemoved<PhysicsCollider3D>();
+      BuildSignalsArrayOnComponentAdded<Quantum.RotatingObstacle>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.RotatingObstacle>();
       BuildSignalsArrayOnComponentAdded<Transform2D>();
       BuildSignalsArrayOnComponentRemoved<Transform2D>();
       BuildSignalsArrayOnComponentAdded<Transform2DVertical>();
@@ -542,6 +580,9 @@ namespace Quantum {
   #endregion
   public unsafe partial class ComponentPrototypeVisitor : Prototypes.ComponentPrototypeVisitorBase {
     public virtual void Visit(Prototypes.FallGirl_Prototype prototype) {
+      VisitFallback(prototype);
+    }
+    public virtual void Visit(Prototypes.RotatingObstacle_Prototype prototype) {
       VisitFallback(prototype);
     }
   }
@@ -605,6 +646,7 @@ namespace Quantum {
       Register(typeof(Ptr), Ptr.SIZE);
       Register(typeof(QBoolean), QBoolean.SIZE);
       Register(typeof(RNGSession), RNGSession.SIZE);
+      Register(typeof(Quantum.RotatingObstacle), Quantum.RotatingObstacle.SIZE);
       Register(typeof(Transform2D), Transform2D.SIZE);
       Register(typeof(Transform2DVertical), Transform2DVertical.SIZE);
       Register(typeof(Transform3D), Transform3D.SIZE);
@@ -646,6 +688,7 @@ namespace Quantum.Prototypes {
     public FP Acceleration;
     public FP JumpImpulse;
     public FP Drag;
+    public QBoolean Grounded;
     partial void MaterializeUser(Frame frame, ref FallGirl result, in PrototypeMaterializationContext context);
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
       FallGirl component = default;
@@ -660,6 +703,7 @@ namespace Quantum.Prototypes {
     public void Materialize(Frame frame, ref FallGirl result, in PrototypeMaterializationContext context) {
       result.Acceleration = this.Acceleration;
       result.Drag = this.Drag;
+      result.Grounded = this.Grounded;
       result.JumpImpulse = this.JumpImpulse;
       result.Player = this.Player;
       MaterializeUser(frame, ref result, in context);
@@ -681,15 +725,46 @@ namespace Quantum.Prototypes {
       MaterializeUser(frame, ref result, in context);
     }
   }
+  [System.SerializableAttribute()]
+  [ComponentPrototypeAttribute(typeof(RotatingObstacle))]
+  public unsafe sealed partial class RotatingObstacle_Prototype : ComponentPrototype<RotatingObstacle> {
+    public FPVector3 AxisSpeed;
+    partial void MaterializeUser(Frame frame, ref RotatingObstacle result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+      RotatingObstacle component = default;
+      Materialize((Frame)f, ref component, in context);
+      return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public override Boolean SetEntityRefs(FrameBase f, EntityRef entity, MapEntityLookup mapEntities) {
+      RotatingObstacle component = f.Get<RotatingObstacle>(entity);
+      SetEntityRefs((Frame)f, ref component, mapEntities);
+      return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref RotatingObstacle result, in PrototypeMaterializationContext context) {
+      result.AxisSpeed = this.AxisSpeed;
+      MaterializeUser(frame, ref result, in context);
+    }
+    public void SetEntityRefs(Frame frame, ref RotatingObstacle result, MapEntityLookup mapEntities) {
+    }
+    public override void Dispatch(ComponentPrototypeVisitorBase visitor) {
+      ((ComponentPrototypeVisitor)visitor).Visit(this);
+    }
+  }
   public unsafe partial class FlatEntityPrototypeContainer {
     [FixedArray(0, 1)]
     public List<Prototypes.FallGirl_Prototype> FallGirl;
+    [FixedArray(0, 1)]
+    public List<Prototypes.RotatingObstacle_Prototype> RotatingObstacle;
     partial void CollectGen(List<ComponentPrototype> target) {
       Collect(FallGirl, target);
+      Collect(RotatingObstacle, target);
     }
     public unsafe partial class StoreVisitor {
       public override void Visit(Prototypes.FallGirl_Prototype prototype) {
         Storage.Store(prototype, ref Storage.FallGirl);
+      }
+      public override void Visit(Prototypes.RotatingObstacle_Prototype prototype) {
+        Storage.Store(prototype, ref Storage.RotatingObstacle);
       }
     }
   }

@@ -2,6 +2,7 @@
 using System;
 
 namespace Quantum {
-  partial class RuntimeConfig {
+  partial class RuntimeConfig
+  {
   }
 }

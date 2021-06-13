@@ -142,6 +142,7 @@
      <Compile Include="Assets\Photon\QuantumDemo\Menu\Editor\MenuShortcuts.cs" />
      <Compile Include="Assets\Photon\QuantumDemo\Menu\Editor\PhotonAppVersionsPostprocessor.cs" />
      <Compile Include="Assets\Photon\QuantumDemo\Menu\Editor\PhotonPrivateAppVersionEditor.cs" />
+     <Compile Include="Assets\unity-chan!\Unity-chan! Model\Editor\CreateLocatorHere.cs" />
      <None Include="Assets\Photon\Quantum\Generated\Editor\PropertyDrawers\GENERATED_CODE.txt" />
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>F:/Study/Quantum_BattleRoyaleBrawler/BattleRoyaleBrawler/quantum_unity/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

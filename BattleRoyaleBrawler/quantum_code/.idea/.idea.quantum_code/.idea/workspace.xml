@@ -13,13 +13,26 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../quantum_unity/Assets/Photon/Quantum/Generated/AssetTypes/EntityComponentRotatingObstacle.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Input.User.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Obstacles.qtn" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/ObstaclesSystem.cs" />
       <option value="$PROJECT_DIR$/quantum.code/SystemSetup.cs" />
       <option value="$PROJECT_DIR$/quantum.code/FallGirls/Movement.qtn" />
-      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Input.User.cs" />
-      <option value="$PROJECT_DIR$/quantum.code/RuntimePlayer.User.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/GameOver.qtn" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/FallData.cs" />
       <option value="$PROJECT_DIR$/quantum.code/FallGirls/MovementSystem.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Data/FallModifier.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/RuntimePlayer.User.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Data/FloorMidifier.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Data/FallData.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/Data/FloorModifier.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/RuntimeConfig.User.cs" />
+      <option value="$PROJECT_DIR$/quantum.code/FallGirls/System/MovementSystem.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tsjMPYwzx7WSUq64TnelMsBuIX" />
@@ -63,13 +76,14 @@
       <option name="presentableId" value="Default" />
       <updated>1623564643200</updated>
       <workItem from="1623564655023" duration="3493000" />
+      <workItem from="1623568364966" duration="8864000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -81,6 +95,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

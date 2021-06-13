@@ -1,0 +1,16 @@
+
+component FallGirl{
+    player_ref Player;
+    FP Acceleration;
+    FP JumpImpulse;
+    FP Drag;
+    bool Grounded;
+}
+
+input{
+
+    button Jump;
+    Byte EncodedDirection;
+    
+    
+}

@@ -46,13 +46,13 @@ MonoBehaviour:
         Id:
           Value: 1710471675203725834
       ResourcePath: DB/Map1
-    - Path: Resources/DB/SphereEntity|EntityView
+    - Path: Resources/DB/FallGirl|EntityView
       AssetRef:
         Id:
           Value: 2285706098509095101
-      ResourcePath: DB/SphereEntity
-    - Path: Resources/DB/SphereEntity|EntityPrototype
+      ResourcePath: DB/FallGirl
+    - Path: Resources/DB/FallGirl|EntityPrototype
       AssetRef:
         Id:
           Value: 2729680527545115281
-      ResourcePath: DB/SphereEntity
+      ResourcePath: DB/FallGirl
